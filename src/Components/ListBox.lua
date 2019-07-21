@@ -70,7 +70,7 @@ local Props = t.interface({
 	paddingTop = t.optional(t.integer),
 	width = t.optional(t.UDim),
 	transparency = t.optional(t.number),
-	useLazyResizing = t.optional(t.boolean),
+	useAggressiveResizing = t.optional(t.boolean),
 })
 
 local ListBox = Roact.Component:extend("ListBox")
@@ -90,16 +90,16 @@ function ListBox:init()
 		local padding = self:getPaddingProps()
 		local newHeight = rbx.AbsoluteContentSize.Y + padding.PaddingTop.Offset + padding.PaddingBottom.Offset
 
-		-- useLazyResizing is used when nesting ListBoxes, as there can be event
+		-- useAggressiveResizing is used when nesting ListBoxes, as there can be event
 		-- re-entry errors from a parent ListBox adjusting every time its child
 		-- ListBoxes adjust. This switch spawns the height change, so that the
 		-- event isn't flooded.
-		if self.props.useLazyResizing then
+		if self.props.useAggressiveResizing then
+			self.setHeight(newHeight)
+		else
 			spawn(function()
 				self.setHeight(newHeight)
 			end)
-		else
-			self.setHeight(newHeight)
 		end
 
 		if self.props.onHeightChange then

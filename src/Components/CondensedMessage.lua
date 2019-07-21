@@ -38,6 +38,7 @@ local function CondensedMessage(props)
 				layoutOrder = 2,
 				listPadding = Styles.Padding,
 				paddingLeft = Styles.Padding,
+				useAggressiveResizing = true,
 			}, {
 				Meta = Roact.createElement(MessageMeta, {
 					message = props.message,
